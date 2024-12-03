@@ -1,0 +1,71 @@
+<div class="card flex justify-content-center mt-6">
+  <p-sidebar #sidebarRef [(visible)]="sidebarVisible">
+    <ng-template pTemplate="header">
+      <span class="inline-flex align-items-center gap-2">
+        <img
+          src="../../../../assets/images/logo2.svg"
+          alt=""
+          width="50"
+          height="60"
+        />
+        <img
+          src="../../../../assets/images/Academic Advising.svg"
+          alt=""
+          width="180"
+          height="60"
+        />
+      </span>
+    </ng-template>
+
+    <ng-template pTemplate="content">
+      <ul class="list-none p-3 m-0">
+        @for (group of menuGroups; track $index) {
+        <li>
+          <div
+            pRipple
+            pStyleClass="@next"
+            [enterFromClass]="'hidden'"
+            [leaveToClass]="'hidden'"
+            [hideOnOutsideClick]="true"
+            class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer p-ripple"
+          >
+            <div class="flex align-items-center">
+              <i [class]="group.icon + ' mr-2'"></i>
+              <span class="font-medium text-gray-500">{{ group.title }}</span>
+            </div>
+            <i class="pi pi-chevron-down ml-auto"></i>
+          </div>
+
+          <ul class="list-none p-0 m-0 overflow-hidden hidden">
+            <!-- Itera sobre los items del grupo -->
+            @for (item of group.items; track $index) {
+            <li>
+              <a
+                [routerLink]="['/dashboard-' + dashboardType, item.path]"
+                routerLinkActive="bg-gray-100"
+                pRipple
+                class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors p-ripple no-underline rounded hover:bg-slate-50"
+              >
+                <div class="space-x-3">
+                  <i [class]="getIconPath(item.path)"></i>
+                  <span class="font-medium text-gray-500">{{
+                    item.title
+                  }}</span>
+                </div>
+              </a>
+            </li>
+            }
+          </ul>
+        </li>
+        }
+      </ul>
+    </ng-template>
+  </p-sidebar>
+  <p-button
+    (onClick)="sidebarVisible = true"
+    icon="pi pi-bars"
+    [raised]="true"
+    label="Menu"
+    severity="info"
+  ></p-button>
+</div>

@@ -1,0 +1,19 @@
+<div class="flex justify-center h-full w-full max-w-xl mx-auto shadow-lg rounded-lg ">
+  <p-card styleClass="w-full shadow-none">
+    <div class="p-4" [@fadeInOut]="isBrowser ? currentQuoteIndex : 0">
+      <div
+        class="text-xl md:text-2xl font-medium mb-3 text-center line-height-3"
+      >
+        "{{ quotes[currentQuoteIndex].text }}"
+      </div>
+
+      <div class="text-lg md:text-xl text-primary font-medium mb-3 text-center">
+        — {{ quotes[currentQuoteIndex].author }}
+      </div>
+
+      <div class="text-base md:text-lg text-700 text-center line-height-3">
+        {{ quotes[currentQuoteIndex].description }}
+      </div>
+    </div>
+  </p-card>
+</div>

@@ -1,0 +1,29 @@
+<header
+  class="flex items-center justify-between p-3 surface-0 border-bottom-1 surface-border shadow"
+>
+  <div class="text-xl font-bold">
+    <img
+      src="../../../../assets/images/logo2.svg"
+      alt=""
+      width="50px"
+      height="50px"
+    />
+    <img
+      src="../../../../assets/images/Academic Advising.svg"
+      alt=""
+      width="150px"
+      height="50px"
+    />
+  </div>
+  <div class="flex items-center font-sans text-600 text-gray-500">
+    <button
+      #btn
+      pButton
+      type="button"
+      icon="pi pi-cog"
+      class="p-button-rounded p-button-text p-button-secondary"
+      (click)="menu.toggle($event)"
+    ></button>
+    <p-menu #menu [popup]="true" [model]="items"></p-menu>
+  </div>
+</header>

@@ -1,0 +1,49 @@
+<div class="sticky top-0 z-50 bg-white shadow">
+  <div class="container mx-auto">
+    <div class="flex justify-between items-center p-4">
+      <!-- Logo section -->
+      <div class="flex items-center cursor-pointer" routerLink="/">
+        <img
+          [src]="logoSrc()"
+          width="50"
+          height="50"
+          [alt]="'Logo'"
+          class="mr-2"
+        />
+        <img
+          [src]="logoTextSrc()"
+          width="150"
+          height="50"
+          [alt]="'Academic Advising'"
+          class="mr-2"
+        />
+      </div>
+
+      <!-- Navigation -->
+      <p-menubar
+        [model]="items"
+        styleClass="nav-menu"
+        [style]="{ border: 'none', background: 'transparent' }"
+      ></p-menubar>
+
+      <!-- Buttons section -->
+      <div class="flex items-center gap-2">
+        <button
+          pButton
+          type="button"
+          icon="pi pi-sun"
+          class="p-button-text"
+          (click)="toggleTheme()"
+          [ngStyle]="isDarkMode() ? { color: 'white' } : {}"
+        ></button>
+        <p-button
+          label="Log In"
+          [outlined]="true"
+          styleClass="mr-2"
+          routerLink="/login"
+        ></p-button>
+        <p-button label="Registrarse" routerLink="/register"></p-button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+:host ::ng-deep {
+  .p-menubar {
+    padding: 0.5rem 0;
+    background: transparent;
+    border: none;
+  }
+}
+
+/* Quitar el outline del focus */
+.p-button:focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-text,
+::ng-deep .p-menubar .p-menuitem-link:hover .p-menuitem-icon {
+  background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: moveBackground 4s linear infinite;
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}

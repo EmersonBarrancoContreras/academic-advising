@@ -1,0 +1,133 @@
+:host {
+  display: block;
+}
+
+::ng-deep .p-button {
+  background: linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000) border-box;
+  border: 1px solid transparent;
+  background-size: 300% 100%;
+  color: black;
+  animation: moveBorder 4s linear infinite;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+::ng-deep .p-button:hover .p-button-label {
+  background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: moveBackground 4s linear infinite;
+}
+
+@keyframes moveBorder {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}
+
+/*estilos de la sección ¿como funciona?*/
+
+.circle-container {
+  width: 4rem;
+  height: 4rem;
+  background: linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000) border-box;
+  border: 1px solid transparent;
+  background-size: 300% 100%;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem auto;
+  animation: moveBorder 4s linear infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.circle-container:hover .icon {
+  background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: moveBackground 4s linear infinite;
+}
+
+.icon {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: black;
+}
+
+@keyframes moveBorder {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}
+
+/*sección de beneficiós*/
+p-card {
+  background: linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000) border-box;
+  border: 1px solid transparent;
+  background-size: 300% 100%;
+  animation: moveBorder 4s linear infinite;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+p-card:hover i {
+  background: linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: moveBackground 4s linear infinite;
+}
+
+@keyframes moveBorder {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}
+
+@keyframes moveBackground {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 300% 0%;
+  }
+}

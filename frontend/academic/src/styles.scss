@@ -1,0 +1,102 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind components;
+@tailwind utilities;
+
+/* Importa los estilos de PrimeNG */
+@import "primeng/resources/themes/lara-light-indigo/theme.css"; /* Cambia a tu tema preferido */
+@import "primeng/resources/primeng.min.css";
+@import "primeicons/primeicons.css";
+
+body.dark {
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #2d2d2d;
+  --menubar-hover: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --text-p: #000000;
+  --text-muted: #94a3b8;
+  --button-primary: #3b82f6;
+  --button-secondary: #475569;
+  --icon-color: #cbd5e1;
+  --icon-color2: #000000;
+
+  .p-menubar {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    .p-menuitem-link {
+      color: var(--text-primary);
+
+      &:hover {
+        background: var(--menubar-hover);
+      }
+    }
+    .p-menuitem-text {
+      color: var(--text-primary);
+    }
+  }
+
+  /* Backgrounds */
+  .bg-white,
+  .bg-gray-50 {
+    background-color: var(--bg-primary);
+  }
+
+  .bg-slate-900 {
+    background-color: #0f172a;
+  }
+  .bg-blue-50 {
+    background-color: #1e293b;
+  }
+
+  /* Text colors */
+  h1,
+  h2,
+  h3,
+  .text-gray-900 {
+    color: var(--text-primary);
+  }
+
+  p {
+    color: var(--text-secondary);
+  }
+
+  /* PrimeNG components */
+  .p-menubar,
+  .p-card,
+  .p-panel-header,
+  .p-panel-content {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+
+  /* Icons */
+  .text-slate-600,
+  .pi {
+    color: var(--icon-color);
+  }
+
+  .icon {
+    color: var(--icon-color2);
+  }
+
+  /* Buttons */
+  .p-button.p-button-primary {
+    background: var(--button-primary);
+    color: var(--text-primary);
+  }
+
+  .p-button.p-button-secondary {
+    background: var(--button-secondary);
+    color: var(--text-primary);
+  }
+
+  /* Card containers */
+  .circle-container {
+    background-color: var(--bg-secondary);
+  }
+
+  /* Gradient backgrounds */
+  .bg-gradient-to-b {
+    background: linear-gradient(to bottom, #1a237e, var(--bg-primary));
+  }
+}
