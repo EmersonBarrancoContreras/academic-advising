@@ -1,4 +1,6 @@
 <!-- Header -->
+<app-navbar></app-navbar>
+
 <div class="flex flex-col mb-5 header-container">
   <h1 class="text-4xl font-bold mb-2">Asesores Académicos</h1>
   <p class="text-xl text-600 mb-4">
@@ -65,7 +67,9 @@
             </div>
 
             <!-- Detalles -->
-            <div class="flex justify-content-between align-items-center mb-3 space-x-2">
+            <div
+              class="flex justify-content-between align-items-center mb-3 space-x-2"
+            >
               <div class="flex align-items-center">
                 <i class="pi pi-book text-blue-500 mr-2"></i>
                 <span>{{ asesor.materias }} materias</span>
@@ -79,7 +83,9 @@
             <p class="line-height-3 mb-3">{{ asesor.descripcion }}</p>
 
             <!-- Precio y Disponibilidad -->
-            <div class="flex justify-content-between align-items-center mb-3 space-x-2">
+            <div
+              class="flex justify-content-between align-items-center mb-3 space-x-2"
+            >
               <span class="text-xl font-semibold"
                 >${{ asesor.precio }}/hora</span
               >
@@ -185,6 +191,10 @@
               ></p-button>
               <p-button
                 icon="pi pi-envelope"
+                styleClass="p-button-outlined"
+              ></p-button>
+              <p-button
+                icon="pi pi-phone"
                 styleClass="p-button-outlined"
               ></p-button>
             </div>

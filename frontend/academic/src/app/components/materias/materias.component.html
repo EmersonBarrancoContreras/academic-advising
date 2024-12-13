@@ -1,3 +1,211 @@
-<p>
-  materias works!
-</p>
+<app-navbar></app-navbar>
+<div class="min-h-screen bg-gray-50 p-4">
+  <!-- Header -->
+  <div class="max-w-7xl mx-auto text-center mb-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Catálogo de Materias</h1>
+    <p class="text-xl text-gray-600 mb-8">
+      Explora las materias disponibles por institución y nivel académico
+    </p>
+
+    <!-- Filtros -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <span class="p-input-icon-left w-full">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          [ngModel]="searchTerm()"
+          (ngModelChange)="updateSearchTerm($event)"
+          placeholder="Buscar materias..."
+          class="w-full"
+        />
+      </span>
+
+      <p-dropdown
+        [options]="instituciones"
+        [ngModel]="selectedInstitution()"
+        (ngModelChange)="updateSelectedInstitution($event)"
+        optionLabel="name"
+        placeholder="Institución"
+        styleClass="w-full"
+      ></p-dropdown>
+
+      <p-dropdown
+        [options]="nivelesAcademicos"
+        [ngModel]="selectedLevel()"
+        (ngModelChange)="updateSelectedLevel($event)"
+        optionLabel="name"
+        placeholder="Nivel Académico"
+        styleClass="w-full"
+      ></p-dropdown>
+
+      <p-dropdown
+        [options]="modalidades"
+        [ngModel]="selectedModality()"
+        (ngModelChange)="updateSelectedModality($event)"
+        optionLabel="name"
+        placeholder="Modalidad"
+        styleClass="w-full"
+      ></p-dropdown>
+    </div>
+
+    <!-- Filtros Adicionales -->
+    <div class="bg-white p-4 rounded-lg shadow-sm mb-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <p-dropdown
+          [options]="periodos"
+          [ngModel]="selectedPeriod()"
+          (ngModelChange)="updateSelectedPeriod($event)"
+          optionLabel="name"
+          placeholder="Período"
+          styleClass="w-full"
+        ></p-dropdown>
+
+        <p-dropdown
+          [options]=""
+          [ngModel]="selectedCredits()"
+          (ngModelChange)="updateSelectedCredits($event)"
+          optionLabel="name"
+          placeholder="Créditos"
+          styleClass="w-full"
+        ></p-dropdown>
+
+        <p-dropdown
+          [options]=""
+          [ngModel]="selectedSchedule()"
+          (ngModelChange)="updateSelectedSchedule($event)"
+          optionLabel="name"
+          placeholder="Horario"
+          styleClass="w-full"
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="max-w-7xl mx-auto">
+      <p-tabView>
+        <!-- Tab de Catálogo -->
+        <p-tabPanel header="Catálogo">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            @for (materia of materiasFiltradas(); track materia.id) {
+            <p-card styleClass="h-full">
+              <!-- Header de la materia -->
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <h3 class="text-xl font-semibold text-gray-900 mb-1">
+                    {{ materia.nombre }}
+                  </h3>
+                  <p class="text-sm text-blue-600">{{ materia.codigo }}</p>
+                </div>
+                <p-tag
+                  [value]="materia.modalidad"
+                  [severity]="getModalidadSeverity(materia.modalidad)"
+                ></p-tag>
+              </div>
+
+              <!-- Estadísticas -->
+              <div
+                class="grid grid-cols-3 gap-4 p-3 bg-gray-50 rounded-lg mb-4"
+              >
+                <div class="text-center">
+                  <div class="text-xl font-bold text-blue-600">
+                    {{ materia.calificacion }}
+                  </div>
+                  <div class="text-xs text-gray-600">Calificación</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-xl font-bold text-green-600">
+                    {{ materia.tasaAprobacion }}%
+                  </div>
+                  <div class="text-xs text-gray-600">Aprobación</div>
+                </div>
+                <div class="text-center">
+                  <div class="text-xl font-bold text-purple-600">
+                    {{ materia.creditos }}
+                  </div>
+                  <div class="text-xs text-gray-600">Créditos</div>
+                </div>
+              </div>
+
+              <!-- Detalles -->
+              <div class="space-y-2 mb-4">
+                <div class="flex items-center text-gray-600">
+                  <i class="pi pi-user mr-2"></i>
+                  <span>{{ materia.profesor }}</span>
+                </div>
+                <div class="flex items-center text-gray-600">
+                  <i class="pi pi-clock mr-2"></i>
+                  <span>{{ materia.horario }}</span>
+                </div>
+                <div class="flex items-center text-gray-600">
+                  <i class="pi pi-users mr-2"></i>
+                  <span
+                    >Cupos: {{ materia.cupoDisponible }}/{{
+                      materia.cupoTotal
+                    }}</span
+                  >
+                </div>
+              </div>
+
+              <!-- Recursos -->
+              <div class="flex flex-wrap gap-2 mb-4">
+                @for (recurso of materia.recursos; track recurso) {
+                <p-chip [label]="recurso"></p-chip>
+                }
+              </div>
+
+              <!-- Acciones -->
+              <div class="flex gap-2">
+                <p-button
+                  label="Ver Detalles"
+                  styleClass="p-button-primary flex-1"
+                  (onClick)="showDetails(materia)"
+                ></p-button>
+                <p-button
+                  icon="pi pi-heart"
+                  styleClass="p-button-outlined"
+                  pTooltip="Agregar a favoritos"
+                ></p-button>
+                <p-button
+                  icon="pi pi-calendar"
+                  styleClass="p-button-outlined"
+                  pTooltip="Ver horario"
+                ></p-button>
+              </div>
+            </p-card>
+            }
+          </div>
+        </p-tabPanel>
+
+        <!-- Tab de Materias Inscritas -->
+        <p-tabPanel header="Mis Materias">
+          <!-- Contenido de materias inscritas -->
+        </p-tabPanel>
+
+        <!-- Tab de Grupos de Estudio -->
+        <p-tabPanel header="Grupos de Estudio">
+          <!-- Contenido de grupos de estudio -->
+        </p-tabPanel>
+
+        <!-- Tab de Tutorías -->
+        <p-tabPanel header="Tutorías">
+          <!-- Contenido de tutorías -->
+        </p-tabPanel>
+      </p-tabView>
+    </div>
+
+    <!-- Modal de Detalles -->
+    <p-dialog
+      [(visible)]="showDetailModal"
+      [modal]="true"
+      [style]="{ width: '90vw', maxWidth: '1200px' }"
+      header="Detalles de la Materia"
+    >
+      @if (selectedMateria()) {
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Contenido del modal -->
+      </div>
+      }
+    </p-dialog>
+  </div>
+</div>

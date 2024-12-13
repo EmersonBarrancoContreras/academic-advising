@@ -1,5 +1,5 @@
-// components/asesores.component.ts
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { Component, OnInit, signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Asesor } from './interfaces/asesor.interface';
@@ -19,6 +19,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { RatingModule } from 'primeng/rating';
 import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import NavbarComponent from '../../shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-asesores',
@@ -35,11 +36,15 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     RatingModule,
     TagModule,
     ProgressSpinnerModule,
+    NavbarComponent,
+    RouterModule,
   ],
   templateUrl: './advisors.component.html',
   styleUrls: ['./advisors.component.scss'],
 })
 export default class AsesoresComponent implements OnInit {
+  constructor(private Router: Router) {}
+
   // Signals
   searchTerm = signal('');
   selectedArea = signal<any>(null);
@@ -101,20 +106,20 @@ export default class AsesoresComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.setupInfiniteScroll();
+    // this.setupInfiniteScroll();
   }
 
-  setupInfiniteScroll() {
-    window.addEventListener('scroll', () => {
-      if (
-        window.innerHeight + window.scrollY >=
-          document.documentElement.scrollHeight - 100 &&
-        !this.loading()
-      ) {
-        this.loadMoreAdvisors();
-      }
-    });
-  }
+  // setupInfiniteScroll() {
+  //   window.addEventListener('scroll', () => {
+  //     if (
+  //       window.innerHeight + window.scrollY >=
+  //         document.documentElement.scrollHeight - 100 &&
+  //       !this.loading()
+  //     ) {
+  //       this.loadMoreAdvisors();
+  //     }
+  //   });
+  // }
 
   loadMoreAdvisors() {
     this.loading.set(true);

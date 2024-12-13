@@ -55,7 +55,7 @@ export default class NavbarComponent {
       icon: 'pi pi-home',
       routerLinkActiveOptions: { exact: true },
       command: () => {
-        this.router.navigate(['/app/landing']);
+        this.router.navigate(['/landing']);
       }
     },
     {
