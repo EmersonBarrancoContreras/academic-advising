@@ -1,0 +1,22 @@
+:host ::ng-deep {
+  .p-card {
+    .p-card-content {
+      padding: 0;
+    }
+  }
+  .p-password {
+    width: 100%;
+  }
+  .p-inputtext {
+    width: 100%;
+  }
+  .p-calendar {
+    width: 100%;
+  }
+}
+
+.contenedor {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

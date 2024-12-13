@@ -1,0 +1,122 @@
+<div class="flex justify-center min-h-screen bg-gray-100">
+  <!-- Columna izquierda para quotes -->
+  <div class="flex items-center lg:pl-16">
+    <app-quotes></app-quotes>
+  </div>
+
+  <!-- Columna derecha para login -->
+  <div class="w-full lg:w-1/2 flex items-center justify-center p-6">
+    <p-toast />
+    <p-card styleClass="w-full max-w-lg">
+      <ng-template pTemplate="header">
+        <div class="text-center py-5">
+          <h2 class="text-3xl font-bold m-0">Iniciar Sesión</h2>
+          <p class="text-600 mt-2">Bienvenido de vuelta</p>
+        </div>
+      </ng-template>
+
+      <p-button
+        styleClass="w-full p-button-outlined mb-3"
+        icon="pi pi-google"
+        label="Continuar con Google"
+        (onClick)="signInWithGoogle()"
+        [loading]="isLoading()"
+        [disabled]="isLoading()"
+      />
+
+      <p-divider align="center" type="solid">
+        <span class="text-600">O continúa con</span>
+      </p-divider>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-5">
+        <div class="grid formgrid p-fluid">
+          <div class="col-12 mb-6">
+            <span class="p-float-label">
+              <input
+                pInputText
+                id="email"
+                formControlName="email"
+                class="w-full"
+                type="email"
+                [disabled]="isLoading()"
+              />
+              <label for="email">Correo Electrónico</label>
+            </span>
+            @if (isFieldInvalid('email')) { @if
+            (loginForm.get('email')?.errors?.['required']) {
+            <small class="p-error">El correo electrónico es requerido</small>
+            } @if (loginForm.get('email')?.errors?.['email']) {
+            <small class="p-error"
+              >Por favor, ingrese un correo electrónico válido</small
+            >
+            } }
+          </div>
+
+          <div class="col-12 mb-6">
+            <span class="p-float-label">
+              <p-password
+                id="password"
+                formControlName="password"
+                [toggleMask]="true"
+                styleClass="w-full"
+                [feedback]="false"
+                [inputStyle]="{ width: '100%' }"
+                [disabled]="isLoading()"
+              />
+              <label for="password">Contraseña</label>
+            </span>
+            @if (isFieldInvalid('password')) { @if
+            (loginForm.get('password')?.errors?.['required']) {
+            <small class="p-error">La contraseña es requerida</small>
+            } @if (loginForm.get('password')?.errors?.['minlength']) {
+            <small class="p-error"
+              >La contraseña debe tener al menos 6 caracteres</small
+            >
+            } }
+          </div>
+
+          <div class="col-12 flex justify-content-between mb-4">
+            <div class="field-checkbox">
+              <p-checkbox
+                formControlName="rememberMe"
+                [binary]="true"
+                id="rememberMe"
+                [disabled]="isLoading()"
+              />
+              <label for="rememberMe" class="ml-2 cursor-pointer"
+                >Recordarme</label
+              >
+            </div>
+            <a
+              routerLink="/auth/recuperar-password"
+              class="text-600 no-underline hover:text-900 transition-colors duration-200"
+            >
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
+
+          <div class="col-12">
+            <p-button
+              type="submit"
+              label="Iniciar Sesión"
+              styleClass="w-full"
+              [loading]="isLoading()"
+              [disabled]="!loginForm.valid || isLoading()"
+
+            />
+          </div>
+
+          <div class="col-12 text-center mt-4">
+            <span class="text-600">¿No tienes una cuenta? </span>
+            <a
+              (click)="navigateTo('./auth/register')"
+              class="font-medium text-blue-500 no-underline hover:text-blue-700 transition-colors duration-200 cursor-pointer"
+            >
+              Regístrate aquí
+            </a>
+          </div>
+        </div>
+      </form>
+    </p-card>
+  </div>
+</div>

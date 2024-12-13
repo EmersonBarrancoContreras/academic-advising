@@ -55,7 +55,7 @@ export default class NavbarComponent {
       icon: 'pi pi-home',
       routerLinkActiveOptions: { exact: true },
       command: () => {
-        this.router.navigate(['/landing']);
+        this.router.navigate(['/app/landing']);
       }
     },
     {
@@ -63,12 +63,18 @@ export default class NavbarComponent {
       routerLink: '/advisors',
       icon: 'pi pi-user',
       routerLinkActiveOptions: { exact: true },
+      command: () => {
+        this.router.navigate(['/advisors']);
+      }
     },
     {
       label: 'Materias',
-      routerLink: '/subjects',
+      routerLink: '/materias',
       icon: 'pi pi-book',
       routerLinkActiveOptions: { exact: true },
+      command: () => {
+        this.router.navigate(['/materias']);
+      }
     },
     {
       label: '¿Cómo funciona?',
@@ -83,4 +89,8 @@ export default class NavbarComponent {
       routerLinkActiveOptions: { exact: true },
     },
   ];
+
+  navigateTo(path: string): void {
+    this.router.navigate([path]);
+  }
 }

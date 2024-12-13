@@ -1,0 +1,40 @@
+// styles/asesores.component.scss
+:host ::ng-deep {
+  .p-tabview-nav {
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .p-card {
+    height: 100%;
+
+    &.destacado {
+      border: 2px solid #ffd700;
+    }
+  }
+
+  .p-rating .p-rating-item.p-rating-item-active .p-rating-icon {
+    color: #ffd700;
+  }
+}
+
+.search-container {
+  width: 100%;
+  max-width: 4xl;
+  padding: 0.75rem;
+}
+
+.header-container {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.filters-container {
+  margin-bottom: 1rem;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}

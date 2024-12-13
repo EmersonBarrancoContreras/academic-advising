@@ -1,14 +1,44 @@
 import { Routes } from '@angular/router';
+import { RoleGuard } from './shared/guards/role-guard.guard';
 
 export const routes: Routes = [
   {
     path: 'landing',
+    title: 'Inicio',
     loadComponent: () => import('./landing/landing.component'),
+  },
+  {
+    path: 'advisors',
+    title: 'Asesores',
+    loadComponent: () => import('./components/advisors/advisors.component'),
+  },
+  {
+    path: 'materias',
+    title: 'Materias',
+    loadComponent: () => import('./components/materias/materias.component'),
+  },
+  {
+    path: 'auth',
+    loadComponent: () => import('./auth/auth.component'),
+    children: [
+      {
+        path: 'login',
+        title: 'Iniciar sesión',
+        loadComponent: () => import('./auth/login/login.component'),
+      },
+      {
+        path: 'register',
+        title: 'Registrarse',
+        loadComponent: () => import('./auth/register/register.component'),
+      },
+    ],
   },
   {
     path: 'dashboard-advisor',
     loadComponent: () =>
       import('./dashboard-advisor/dashboard-advisor.component'),
+    canActivate: [RoleGuard],
+    data: { rol: 'asesor' },
     children: [
       {
         path: 'profile',
@@ -27,6 +57,8 @@ export const routes: Routes = [
     path: 'dashboard-student',
     loadComponent: () =>
       import('./dashboard-student/dashboard-student.component'),
+    canActivate: [RoleGuard],
+    data: { rol: 'estudiante' },
     children: [
       //Portal estudiante
       {

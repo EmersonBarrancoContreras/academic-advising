@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -21,12 +22,17 @@ import NavbarComponent from '@shared/components/navbar/navbar.component';
     ScrollPanelModule,
     QuotesComponent,
     NavbarComponent,
+    RouterModule
   ],
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss'],
 })
 export default class LandingComponent implements OnInit {
   items: { label?: string; icon?: string; separator?: boolean }[] = [];
+
+  private router = inject(Router);
+
+  constructor() {}
 
   ngOnInit(): void {
     this.items = [
@@ -114,4 +120,7 @@ export default class LandingComponent implements OnInit {
         'Las asesorías personalizadas me han ayudado mucho. El proceso de reserva es muy sencillo.',
     },
   ];
+  navigateTo(path: string): void {
+    void this.router.navigate([path]);
+  }
 }

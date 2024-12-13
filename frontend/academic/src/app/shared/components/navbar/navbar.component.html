@@ -40,9 +40,13 @@
           label="Log In"
           [outlined]="true"
           styleClass="mr-2"
-          routerLink="/login"
+          (click)="navigateTo('./auth/login')"
         ></p-button>
-        <p-button label="Registrarse" routerLink="/register"></p-button>
+
+        <p-button
+          label="Registrarse"
+          (click)="navigateTo('./auth/register')"
+        ></p-button>
       </div>
     </div>
   </div>

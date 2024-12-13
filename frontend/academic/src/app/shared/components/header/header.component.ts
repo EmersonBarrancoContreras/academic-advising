@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
+import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -13,6 +14,8 @@ import { Router } from '@angular/router';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
+  private authService = inject(AuthService);
+  private messageService = inject(MessageService);
   items: MenuItem[];
 
   constructor(private router: Router) {
@@ -25,7 +28,7 @@ export class HeaderComponent implements OnInit {
       {
         label: 'Cerrar Sesión',
         icon: 'pi pi-sign-out',
-        command: () => this.logout(),
+        command: () => this.onLogout(),
       },
     ];
   }
@@ -34,9 +37,13 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/settings']);
   }
 
-  logout(): void {
-    // Implementar lógica de cierre de sesión
-    this.router.navigate(['/login']);
+  onLogout(): void {
+    this.authService.logout();
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Sesión Cerrada',
+      detail: 'Has cerrado sesión correctamente',
+    });
   }
 
   ngOnInit(): void {}

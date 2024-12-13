@@ -33,7 +33,7 @@ interface Quote {
   ],
 })
 export class QuotesComponent implements OnInit, OnDestroy {
-  
+
   currentQuoteIndex: number = 0;
   private subscription?: Subscription;
   public isBrowser: boolean;
@@ -103,4 +103,5 @@ export class QuotesComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
+  
 }
