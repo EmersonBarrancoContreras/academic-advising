@@ -1,3 +1,141 @@
 <app-header class="bg-white"></app-header>
 <router-outlet></router-outlet>
-<app-side-menu class=""></app-side-menu>
+<app-side-menu></app-side-menu>
+<!-- Widgets de Resumen -->
+<div class="grid grid-cols-2 gap-4 mt-3 p-4">
+  <!-- Primera fila -->
+  <div class="col-span-1">
+    <p-card styleClass="h-full">
+      <div class="flex flex-col">
+        <div class="flex justify-end mb-2">
+          <i class="pi pi-calendar text-500 text-2xl text-blue-600"></i>
+        </div>
+        <div>
+          <div class="text-500">Próxima Asesoría</div>
+          <div class="text-900 text-xl font-bold">
+            <!-- {{
+              proximaAsesoria
+                ? (proximaAsesoria.fechaHoraInicio | date : "shortTime")
+                : "No hay"
+            }} -->
+          </div>
+          <div class="text-500">
+            {{
+              proximaAsesoria?.materia?.nombre || "Sin asesorías programadas"
+            }}
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="col-span-1">
+    <p-card styleClass="h-full">
+      <div class="flex flex-col">
+        <div class="flex justify-end mb-2">
+          <i class="pi pi-star text-500 text-2xl text-yellow-300"></i>
+        </div>
+        <div>
+          <div class="text-500">Materias Activas</div>
+          <div class="text-900 text-xl font-bold">
+            <!-- {{ materiasActivas?.length || 0 }} -->
+          </div>
+          <div class="text-500">En curso</div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Segunda fila -->
+  <div class="col-span-1">
+    <p-card styleClass="h-full">
+      <div class="flex flex-col">
+        <div class="flex justify-end mb-2">
+          <i class="pi pi-book text-500 text-2xl"></i>
+        </div>
+        <div>
+          <div class="text-500">Asesorías Completadas</div>
+          <div class="text-900 text-xl font-bold">
+            {{ estadisticas?.asesoriasCompletadas || 0 }}
+          </div>
+          <div class="text-500">
+            De {{ estadisticas?.totalAsesorias || 0 }} totales
+          </div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="col-span-1">
+    <p-card styleClass="h-full">
+      <div class="flex flex-col">
+        <div class="flex justify-end mb-2">
+          <i class="pi pi-clock text-500 text-2xl"></i>
+        </div>
+        <div>
+          <div class="text-500">Horas Estudiadas</div>
+          <div class="text-900 text-xl font-bold">
+            {{ estadisticas?.horasTotales || 0 }}h
+          </div>
+          <div class="text-500">Total acumulado</div>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>
+
+<!-- Sección Principal -->
+<div class="grid mt-3 p-4">
+  <!-- Próximas Asesorías -->
+  <div class="col-12 md:col-6">
+    <p-card header="Próximas Asesorías">
+      @if (proximasAsesorias.length === 0) {
+      <div class="p-3 text-center text-500">
+        No tienes asesorías programadas
+      </div>
+      } @else { @for (asesoria of proximasAsesorias; track asesoria.idAsesoria)
+      {
+      <div
+        class="flex justify-content-between align-items-center p-3 border-bottom-1 surface-border"
+      >
+        <div>
+          <div class="text-900 font-medium">{{ asesoria.materia.nombre }}</div>
+          <div class="text-500">
+            {{ asesoria.asesor.usuario.nombre }}
+            {{ asesoria.asesor.usuario.apellido }}
+          </div>
+        </div>
+        <div class="text-right">
+          <!-- <div class="text-900 font-medium">
+            {{ asesoria.fechaHoraInicio | date : "shortDate" }}
+          </div>
+          <div class="text-500">
+            {{ asesoria.fechaHoraInicio | date : "shortTime" }}
+          </div> -->
+        </div>
+      </div>
+      } }
+    </p-card>
+  </div>
+
+  <!-- Progreso de Materias -->
+  <div class="col-12 md:col-6 mt-3">
+    <p-card header="Materias Activas">
+      @if (materiasActivas.length === 0) {
+      <div class="p-3 text-center text-500">No tienes materias activas</div>
+      } @else { @for (materia of materiasActivas; track materia.idMateria) {
+      <div class="mb-4">
+        <div class="flex justify-content-between align-items-center mb-2">
+          <div class="text-900 font-medium">{{ materia.nombre }}</div>
+          <div class="text-500">{{ calcularProgresoMateria(materia) }}%</div>
+        </div>
+        <p-progressBar
+          [value]="calcularProgresoMateria(materia)"
+          [showValue]="false"
+          [style]="{ height: '0.5rem' }"
+        ></p-progressBar>
+      </div>
+      } }
+    </p-card>
+  </div>
+</div>

@@ -1,40 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-interface Universidad {
-  id: number;
-  nombre: string;
-  ciudad: string;
-  direccion?: string;
-  sedes: Sede[];
-  carreras: Carrera[];
-}
-
-interface Colegio {
-  id: number;
-  nombre: string;
-  ciudad: string;
-  direccion?: string;
-}
-
-interface Sede {
-  id: number;
-  nombre: string;
-  ciudad: string;
-  direccion: string;
-}
-
-interface Carrera {
-  id: number;
-  nombre: string;
-  numeroSemestres: number;
-}
-
-interface InstitucionesResponse {
-  universidades: Universidad[];
-  colegios: Colegio[];
-}
+import { InstitucionesResponse } from '../auth/types/institutiones.types';
+import {
+  Carrera,
+  Institucion,
+  Sede,
+} from './interfaces/institutiones.interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +17,27 @@ export class InstitucionesService {
   constructor(private http: HttpClient) {}
 
   obtenerInstituciones(): Observable<InstitucionesResponse> {
-    return this.http.get<InstitucionesResponse>(this.apiUrl);
+    // Ajusta este endpoint según tu API
+    return this.http.get<InstitucionesResponse>(`${this.apiUrl}/`);
+  }
+
+  obtenerColegios(): Observable<Institucion[]> {
+    return this.http.get<Institucion[]>(`${this.apiUrl}/`);
+  }
+
+  obtenerUniversidades(): Observable<Institucion[]> {
+    return this.http.get<Institucion[]>(`${this.apiUrl}/`);
+  }
+
+  obtenerSedesPorInstitucion(institucionId: number): Observable<Sede[]> {
+    return this.http.get<Sede[]>(
+      `${this.apiUrl}/instituciones/${institucionId}/`
+    );
+  }
+
+  obtenerCarrerasPorUniversidad(universidadId: number): Observable<Carrera[]> {
+    return this.http.get<Carrera[]>(
+      `${this.apiUrl}/universidades/${universidadId}/`
+    );
   }
 }

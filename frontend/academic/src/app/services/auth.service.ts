@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 
-// Types & Enums
+// Types
 export type UserRole = 'estudiante' | 'asesor' | 'administrador';
 export type NivelAcademico = 'primaria' | 'secundaria' | 'universitario';
 
@@ -14,20 +14,19 @@ export interface User {
   email: string;
   nombre: string;
   apellido: string;
-  nivelAcademico: NivelAcademico;
-  gradoActual?: number;
-  semestreActual?: number;
-  idCarrera?: number;
-  idColegio?: number;
-  idSede?: number;
   rol: UserRole;
+  nivelAcademico?: NivelAcademico;
 }
 
-export interface RegisterData {
+export interface AuthCredentials {
   email: string;
   password: string;
+}
+
+export interface RegisterData extends AuthCredentials {
   nombre: string;
   apellido: string;
+  rol: UserRole;
   nivelAcademico: NivelAcademico;
   gradoActual?: number;
   semestreActual?: number;
@@ -36,245 +35,140 @@ export interface RegisterData {
   idSede?: number;
 }
 
-export interface LoginData {
-  email: string;
-  password: string;
-}
-
-interface RegisterResponse {
-  message: string;
-  user?: User;
-}
-
-export interface LoginResponse {
-  message: string;
-  accessToken: string; // Cambio aquí para coincidir con el backend
+export interface AuthResponse {
+  accessToken: string;
   user: User;
-  token: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  // Constants
-  private readonly STORAGE_KEYS = {
+  private readonly API_URL = 'http://localhost:3000/auth';
+  private readonly STORAGE = {
     TOKEN: 'token',
     USER: 'user',
-    REMEMBER_EMAIL: 'rememberedEmail',
+    EMAIL: 'rememberedEmail',
   } as const;
 
-  private readonly API_URL = 'http://localhost:3000/auth';
-  private readonly VALID_ROLES: UserRole[] = [
-    'estudiante',
-    'asesor',
-    'administrador',
-  ];
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly isBrowser = isPlatformBrowser(this.platformId);
 
-  // Dependencies
-  private http = inject(HttpClient);
-  private router = inject(Router);
-  private platformId = inject(PLATFORM_ID);
-
-  // State
-  public authUser = new BehaviorSubject<User | null>(null);
-  currentUser$ = this.authUser.asObservable();
+  public readonly authUser = new BehaviorSubject<User | null>(null);
+  readonly currentUser$ = this.authUser.asObservable();
 
   constructor() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.initializeStoredUser();
+    if (this.isBrowser) {
+      const user = this.getStoredUser();
+      if (user) this.authUser.next(user);
     }
   }
 
-  // Storage Methods
-  private getStorageItem(key: string): string | null {
-    if (isPlatformBrowser(this.platformId)) {
-      return localStorage.getItem(key);
-    }
-    return null;
-  }
-
-  private setStorageItem(key: string, value: string): void {
-    if (isPlatformBrowser(this.platformId)) {
-      try {
-        localStorage.setItem(key, value);
-      } catch (error) {
-        console.error(`Error setting storage item for key ${key}:`, error);
-      }
-    }
-  }
-
-  private removeStorageItem(key: string): void {
-    if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(key);
-    }
-  }
-
-  // Public Methods
-  register(userData: RegisterData): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(
-      `${this.API_URL}/register`,
-      userData
-    );
-  }
-
-  login(loginData: LoginData): Observable<LoginResponse> {
+  register(data: RegisterData): Observable<AuthResponse> {
     return this.http
-      .post<LoginResponse>(`${this.API_URL}/login`, loginData)
-      .pipe(
-        tap((response) => {
-          if (response && response.accessToken && response.user) {
-            // Validación
-            this.setAuthState({
-              ...response,
-              token: response.accessToken, // Asegurar estructura correcta
-            });
-          } else {
-            console.error('Invalid login response structure:', response);
-          }
-        })
-      );
+      .post<AuthResponse>(`${this.API_URL}/register`, data)
+      .pipe(tap((response) => this.handleAuthResponse(response)));
   }
 
-  googleLogin(): Observable<LoginResponse> {
+  login(credentials: AuthCredentials): Observable<AuthResponse> {
     return this.http
-      .post<LoginResponse>(`${this.API_URL}/google-login`, {})
-      .pipe(
-        tap((response) => {
-          this.setAuthState(response);
-        })
-      );
+      .post<AuthResponse>(`${this.API_URL}/login`, credentials)
+      .pipe(tap((response) => this.handleAuthResponse(response)));
   }
 
   logout(): void {
     this.authUser.next(null);
-    if (isPlatformBrowser(this.platformId)) {
-      Object.values(this.STORAGE_KEYS).forEach((key) => {
-        this.removeStorageItem(key);
-      });
+    if (this.isBrowser) {
+      Object.values(this.STORAGE).forEach((key) =>
+        localStorage.removeItem(key)
+      );
     }
     void this.router.navigate(['/landing']);
   }
 
   isLoggedIn(): boolean {
-    if (!isPlatformBrowser(this.platformId)) return false;
-
-    try {
-      const token = this.getToken();
-      const user = this.getCurrentUser();
-      return !!(token && user);
-    } catch (error) {
-      console.error('Error verificando autenticación:', error);
-      this.logout();
-      return false;
-    }
+    return this.isBrowser && !!this.getStoredToken() && !!this.authUser.value;
   }
 
-  getToken(): string | null {
-    if (!isPlatformBrowser(this.platformId)) return null;
-
-    const token = this.getStorageItem(this.STORAGE_KEYS.TOKEN);
-    if (!token || !this.isValidToken(token)) {
-      return null;
-    }
-    return token;
-  }
-
-  getCurrentUser(): User | null {
-    if (!isPlatformBrowser(this.platformId)) return null;
-
-    try {
-      const userStr = this.getStorageItem(this.STORAGE_KEYS.USER);
-
-      if (!userStr) {
-        return null;
-      }
-
-      const user = JSON.parse(userStr) as User;
-
-      if (!this.isValidUser(user)) {
-        return null;
-      }
-
-      return user;
-    } catch (error) {
-      console.error('Error getting current user:', error);
-      return null;
-    }
-  }
-
-  getDashboardRouteByRole(rol: UserRole): string {
+  getDashboardRoute(
+    rol: UserRole = this.authUser.value?.rol ?? 'estudiante'
+  ): string {
     const routes: Record<UserRole, string> = {
       estudiante: '/dashboard-student',
       asesor: '/dashboard-advisor',
       administrador: '/dashboard-admin',
     };
-    const route = routes[rol] || '/auth/login';
-    return route;
+    return routes[rol] || '/auth/login';
   }
 
-  // Email storage methods
+  getStoredToken(): string | null {
+    return this.isBrowser ? localStorage.getItem(this.STORAGE.TOKEN) : null;
+  }
+
   getStoredEmail(): string | null {
-    return this.getStorageItem(this.STORAGE_KEYS.REMEMBER_EMAIL);
+    return this.isBrowser ? localStorage.getItem(this.STORAGE.EMAIL) : null;
   }
 
   setStoredEmail(email: string): void {
-    this.setStorageItem(this.STORAGE_KEYS.REMEMBER_EMAIL, email);
+    if (this.isBrowser) {
+      localStorage.setItem(this.STORAGE.EMAIL, email);
+    }
   }
 
   removeStoredEmail(): void {
-    this.removeStorageItem(this.STORAGE_KEYS.REMEMBER_EMAIL);
-  }
-
-  // Private Methods
-  private initializeStoredUser(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      const user = this.getCurrentUser();
-      if (user) {
-        this.authUser.next(user);
-      }
+    if (this.isBrowser) {
+      localStorage.removeItem(this.STORAGE.EMAIL);
     }
   }
 
-  private setAuthState(response: LoginResponse): void {
+  private getStoredUser(): User | null {
+    if (!this.isBrowser) return null;
+
     try {
-      // Actualizar el BehaviorSubject
-      this.authUser.next(response.user);
+      const userStr = localStorage.getItem(this.STORAGE.USER);
+      if (!userStr) return null;
 
-      // Guardar en localStorage
-      localStorage.setItem(this.STORAGE_KEYS.TOKEN, response.accessToken); // Cambio aquí
-      localStorage.setItem(
-        this.STORAGE_KEYS.USER,
-        JSON.stringify(response.user)
-      );
-    } catch (error) {
-      console.error('Error in setAuthState:', error);
+      const user = JSON.parse(userStr) as User;
+      return this.validateUser(user) ? user : null;
+    } catch {
+      localStorage.removeItem(this.STORAGE.USER);
+      return null;
     }
   }
 
-  private clearStorage(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      Object.values(this.STORAGE_KEYS).forEach((key) => {
-        this.removeStorageItem(key);
-      });
+  private handleAuthResponse(response: AuthResponse): void {
+    if (!this.validateAuthResponse(response)) {
+      console.error('Invalid auth response:', response);
+      return;
+    }
+
+    this.authUser.next(response.user);
+
+    if (this.isBrowser) {
+      localStorage.setItem(this.STORAGE.TOKEN, response.accessToken);
+      localStorage.setItem(this.STORAGE.USER, JSON.stringify(response.user));
     }
   }
 
-  private isValidToken(token: string): boolean {
-    return token.split('.').length === 3;
-  }
-
-  private isValidUser(user: unknown): user is User {
+  private validateUser(user: unknown): user is User {
     if (!user || typeof user !== 'object') return false;
 
-    const userObj = user as any;
-    return (
-      typeof userObj.id === 'number' &&
-      typeof userObj.email === 'string' &&
-      typeof userObj.nombre === 'string' &&
-      typeof userObj.apellido === 'string' &&
-      typeof userObj.rol === 'string' &&
-      this.VALID_ROLES.includes(userObj.rol)
+    const { id, email, nombre, apellido, rol } = user as User;
+    return !!(
+      typeof id === 'number' &&
+      typeof email === 'string' &&
+      typeof nombre === 'string' &&
+      typeof apellido === 'string' &&
+      ['estudiante', 'asesor', 'administrador'].includes(rol)
     );
+  }
+
+  private validateAuthResponse(response: unknown): response is AuthResponse {
+    if (!response || typeof response !== 'object') return false;
+
+    const { accessToken, user } = response as AuthResponse;
+    return !!(typeof accessToken === 'string' && this.validateUser(user));
   }
 }

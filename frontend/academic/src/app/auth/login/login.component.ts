@@ -17,7 +17,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 
 // Services e interfaces
-import { AuthService, LoginData, LoginResponse } from '@services/auth.service';
+import { AuthService, AuthCredentials } from '@services/auth.service';
 import { QuotesComponent } from '@shared/components/quotes/quotes.component';
 
 @Component({
@@ -58,9 +58,9 @@ export default class LoginComponent {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       // Verificar usuario autenticado
-      const currentUser = this.authService.getCurrentUser();
+      const currentUser = this.authService.authUser.value;
       if (currentUser) {
-        const dashboardRoute = this.authService.getDashboardRouteByRole(
+        const dashboardRoute = this.authService.getDashboardRoute(
           currentUser.rol
         );
         void this.router.navigate([dashboardRoute]);
@@ -89,7 +89,7 @@ export default class LoginComponent {
 
       try {
         const formValues = this.loginForm.value;
-        const loginData: LoginData = {
+        const loginData: AuthCredentials = {
           email: formValues.email ?? '',
           password: formValues.password ?? '',
         };
@@ -112,10 +112,9 @@ export default class LoginComponent {
           detail: 'Has iniciado sesión correctamente',
         });
 
-        const dashboardRoute = this.authService.getDashboardRouteByRole(
+        const dashboardRoute = this.authService.getDashboardRoute(
           response.user.rol
         );
-
         await this.router.navigate([dashboardRoute]);
       } catch (error) {
         this.messageService.add({
@@ -129,32 +128,14 @@ export default class LoginComponent {
     }
   }
 
-  async signInWithGoogle() {
-    this.isLoading.set(true);
-
-    try {
-      const response = await firstValueFrom(this.authService.googleLogin());
-
-      this.messageService.add({
-        severity: 'success',
-        summary: '¡Bienvenido!',
-        detail: 'Has iniciado sesión con Google correctamente',
-      });
-
-      const dashboardRoute = this.authService.getDashboardRouteByRole(
-        response.user.rol
-      );
-      void this.router.navigate([dashboardRoute]);
-    } catch (error) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'No se pudo iniciar sesión con Google',
-      });
-    } finally {
-      this.isLoading.set(false);
-    }
+  signInWithGoogle(): void {
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Google Sign In',
+      detail: 'Funcionalidad en desarrollo...',
+    });
   }
+
   navigateTo(path: string): void {
     void this.router.navigate([path]);
   }

@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+
+::ng-deep .p-card {
+  height: 100%;
+  min-height: 150px;
+}
+
+::ng-deep .p-card .p-card-content {
+  padding: 0;
+}

@@ -31,7 +31,7 @@ export class RoleGuard implements CanActivate {
           return true;
         }
 
-        const correctDashboard = this.authService.getDashboardRouteByRole(
+        const correctDashboard = this.authService.getDashboardRoute(
           currentUser.rol
         );
         return this.router.createUrlTree([correctDashboard]);

@@ -5,11 +5,12 @@ import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
 import { AuthService } from '@services/auth.service';
+import { SideMenuComponent } from '../side-menu/side-menu.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, MenuModule, ButtonModule],
+  imports: [CommonModule, MenuModule, ButtonModule, SideMenuComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
