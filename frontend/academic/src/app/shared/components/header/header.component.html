@@ -1,27 +1,27 @@
 <header
-  class="flex items-center justify-between p-3 surface-0 border-bottom-1 surface-border shadow"
+  class="flex items-center justify-between p-4 surface-0 border-bottom-1 surface-border shadow bg-gray-800"
 >
   <div class="text-xl font-bold flex gap-6 align-middle items-center">
     <img
-      src="../../../../assets/images/logo2.svg"
+      src="../../../../assets/images/logo-white.svg"
       alt=""
-      width="50px"
-      height="50px"
+      width="50"
+      height="50"
     />
     <img
-      src="../../../../assets/images/Academic Advising.svg"
+      src="../../../../assets/images/Academic-Advising-white.svg"
       alt=""
-      width="150px"
-      height="50px"
+      width="150"
+      height="50"
     />
   </div>
-  <div class="flex items-center font-sans text-600 text-gray-500">
+  <div class="flex items-center font-sans text-gray-500">
     <button
       #btn
       pButton
       type="button"
       icon="pi pi-cog"
-      class="p-button-rounded p-button-text p-button-secondary"
+      class="p-button-rounded p-button-text p-button-secondary text-white"
       (click)="menu.toggle($event)"
     ></button>
     <p-menu #menu [popup]="true" [model]="items"></p-menu>

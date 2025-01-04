@@ -60,6 +60,12 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
     data: { rol: 'estudiante' },
     children: [
+      {
+        path: 'inicio',
+        title: 'Home',
+        loadComponent: () =>
+          import('./dashboard-student/inicio/inicio.component'),
+      },
       //Portal estudiante
       {
         path: 'profile',
@@ -176,7 +182,7 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'dashboard-student',
+        redirectTo: 'inicio',
         pathMatch: 'full',
       },
     ],

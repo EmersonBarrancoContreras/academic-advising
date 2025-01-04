@@ -1,0 +1,13 @@
+:host {
+  .menu-toggle {
+    position: fixed;
+    top: 5.3rem; // Ajusta esta altura según necesites
+    z-index: 1001;
+    cursor: pointer;
+    padding: 0.3rem;
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    transition: left 0.4s ease-in-out;
+  }
+}

@@ -1,5 +1,5 @@
 <div class="card flex justify-content-center mt-6">
-  <p-sidebar #sidebarRef [(visible)]="sidebarVisible">
+  <p-sidebar #sidebarRef [(visible)]="sidebarVisible" [dismissible]="true">
     <ng-template pTemplate="header">
       <span class="inline-flex align-items-center gap-2">
         <img
@@ -37,7 +37,6 @@
           </div>
 
           <ul class="list-none p-0 m-0 overflow-hidden hidden">
-            <!-- Itera sobre los items del grupo -->
             @for (item of group.items; track $index) {
             <li>
               <a
@@ -65,6 +64,6 @@
     (onClick)="sidebarVisible = true"
     icon="pi pi-bars"
     [raised]="true"
-    label="Menu"
+    label=""
   ></p-button>
 </div>

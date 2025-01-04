@@ -26,6 +26,10 @@
   --surface-hover: #f6f9fc;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+}
 // Tema oscuro
 body.dark {
   // Tus variables personalizadas
