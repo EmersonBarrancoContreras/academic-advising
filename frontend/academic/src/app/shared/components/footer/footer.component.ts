@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { MenuModule } from 'primeng/menu';
 
 @Component({
@@ -7,5 +7,6 @@ import { MenuModule } from 'primeng/menu';
   imports: [MenuModule],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class FooterComponent {}
