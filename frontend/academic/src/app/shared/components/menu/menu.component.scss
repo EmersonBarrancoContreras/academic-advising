@@ -1,13 +1,81 @@
-:host {
+:host ::ng-deep {
   .menu-toggle {
     position: fixed;
-    top: 5.3rem; // Ajusta esta altura según necesites
+    top: 5.3rem;
     z-index: 1001;
     cursor: pointer;
     padding: 0.3rem;
     display: flex;
     align-items: start;
     justify-content: start;
-    transition: left 0.4s ease-in-out;
+    transition: left 0.3s ease-in-out;
+  }
+
+  .p-menu {
+    background-color: #1e293b !important;
+    border: none !important;
+    border-radius: 0px !important;
+    // Elementos base
+    ul,
+    li {
+      background-color: #1e293b !important;
+    }
+
+    // Estados hover y active
+    .p-menuitem:not(.p-highlight):not(.p-disabled) {
+      > .p-menuitem-content:hover,
+      > .p-menuitem-link:hover {
+        background-color: #131b27 !important;
+        i {
+          color: #ffffff !important;
+        }
+      }
+    }
+
+    .p-menuitem-content {
+      background: #1e293b !important;
+    }
+
+    // Estados router-link-active
+    .router-link-active {
+      background-color: #0f172a !important;
+      i {
+        color: #1e293b !important;
+      }
+    }
+
+    // Iconos
+    i {
+      color: #f8f9fa !important;
+      transition: color 0.3s ease !important;
+    }
+
+    .pi-chevron-down {
+      color: #f8f9fa !important;
+    }
+
+    // Submenú
+    .submenu {
+      li {
+        a.router-link-active {
+          background-color: #0f172a !important;
+          i {
+            color: #1e293b !important;
+          }
+        }
+
+        a:not(.router-link-active):hover {
+          background-color: #2d3b4e !important;
+          i {
+            color: #1e293b !important;
+          }
+        }
+      }
+    }
+  }
+
+  .p-scrollpanel-bar-y {
+    width: 4px !important;
+    right: -276px !important;
   }
 }
