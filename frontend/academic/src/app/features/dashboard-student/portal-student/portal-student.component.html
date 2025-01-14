@@ -1,0 +1,103 @@
+<div class="xl:max-w-full 2xl:max-w-full mx-auto p-4 xl:p-6">
+  <p-tabView>
+    <p-tabPanel header="Perfil">
+      <p-card>
+        <!-- Cover y Avatar -->
+        <div class="relative mb-6 xl:mb-8 2xl:mb-10">
+          <img
+            [src]="profile.basicInfo.coverPhoto"
+            class="w-full h-48 xl:h-64 2xl:h-80 object-cover rounded-t-lg cover-photo"
+            alt="Cover photo"
+          />
+          <p-avatar
+            [image]="profile.basicInfo.avatar"
+            size="xlarge"
+            class="absolute -bottom-6 xl:-bottom-8 2xl:-bottom-10 left-8 border-4 border-white"
+            [style]="{ width: '96px', height: '96px' }"
+            imageClass="rounded-full"
+          >
+          </p-avatar>
+        </div>
+
+        <!-- Información básica con padding ajustado -->
+        <div class="mt-8 xl:mt-10 2xl:mt-12 px-4 xl:px-6 2xl:px-8">
+          <h1 class="text-3xl xl:text-4xl 2xl:text-5xl font-bold">
+            {{ profile.basicInfo.displayName }}
+          </h1>
+          <p class="text-gray-600 mt-2 xl:mt-3 2xl:mt-4">
+            {{ profile.basicInfo.biography }}
+          </p>
+        </div>
+
+        <p-divider></p-divider>
+
+        <!-- Tabs con ancho completo -->
+        <p-tabView styleClass="w-full">
+          <!-- Información Personal -->
+          <p-tabPanel header="Información Personal">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <h3 class="font-semibold mb-2">Contacto</h3>
+                <div class="space-y-2">
+                  <div>
+                    <label class="text-gray-600">Email Personal</label>
+                    <p>{{ profile.contactInfo.email.personal }}</p>
+                  </div>
+                  <div>
+                    <label class="text-gray-600">Email Institucional</label>
+                    <p>{{ profile.contactInfo.email.institutional }}</p>
+                  </div>
+                  <div>
+                    <label class="text-gray-600">Teléfono</label>
+                    <p>{{ profile.contactInfo.phone }}</p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-semibold mb-2">Ubicación</h3>
+                <p>
+                  {{ profile.location.city }}, {{ profile.location.country }}
+                </p>
+              </div>
+            </div>
+          </p-tabPanel>
+
+          <!-- Idiomas -->
+          <p-tabPanel header="Idiomas">
+            <div class="grid grid-cols-1 gap-3">
+              @for (lang of profile.languages; track lang.language) {
+              <div
+                class="flex justify-between items-center p-3 bg-gray-50 rounded"
+              >
+                <span>{{ lang.language }}</span>
+                <p-tag
+                  [value]="lang.level"
+                  [severity]="getLanguageSeverity(lang.level)"
+                >
+                </p-tag>
+              </div>
+              }
+            </div>
+          </p-tabPanel>
+        </p-tabView>
+
+        <!-- Acciones -->
+        <div class="flex justify-center gap-4 mt-4">
+          <p-button
+            label="Editar Perfil"
+            icon="pi pi-user-edit"
+            severity="primary"
+          >
+          </p-button>
+          <p-button label="Configuración" icon="pi pi-cog" severity="secondary">
+          </p-button>
+        </div>
+      </p-card>
+    </p-tabPanel>
+    <p-tabPanel header="Perfil Academico">
+    </p-tabPanel>
+    <p-tabPanel header="Historial Academico">
+
+    </p-tabPanel>
+  </p-tabView>
+</div>

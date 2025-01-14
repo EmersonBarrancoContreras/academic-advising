@@ -3,6 +3,7 @@ import {
   Entity,
   Index,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Asesores } from './asesores.entity';
@@ -45,6 +46,18 @@ export class Usuarios {
 
   @Column('boolean', { name: 'activo', nullable: true, default: () => 'true' })
   public activo: boolean | null;
+
+  @Column({ nullable: true })
+  avatar: string;
+
+  @Column({ type: 'text', nullable: true })
+  biografia: string;
+
+  @Column({ length: 20, nullable: true })
+  telefono: string;
+
+  @OneToOne(() => Estudiantes)
+  estudiante: Estudiantes;
 
   @OneToMany(() => Asesores, (asesores) => asesores.idUsuario, { lazy: true })
   public asesores: Promise<Asesores[]>;

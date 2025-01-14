@@ -1,0 +1,30 @@
+:host ::ng-deep {
+  .p-card {
+    @apply shadow-lg;
+    img.cover-photo {
+      object-fit: cover !important;
+      image-rendering: crisp-edges !important;
+      backface-visibility: hidden !important;
+      transform: translateZ(0) !important;
+    }
+  }
+
+  .p-tabview-nav {
+    @apply border-b border-gray-200;
+  }
+
+  .p-tabview-nav li .p-tabview-nav-link {
+    @apply bg-transparent;
+  }
+
+  .p-avatar {
+    img {
+      border-radius: 64px !important;
+      image-rendering: crisp-edges !important;
+      object-fit: cover !important;
+      -webkit-font-smoothing: antialiased !important;
+      backface-visibility: hidden !important;
+      transform: translateZ(0) !important;
+    }
+  }
+}

@@ -8,52 +8,47 @@
   >
   </p-button>
   <div class="fixed" [@menuAnimation]="menuVisible ? 'visible' : 'hidden'">
-    <p-scrollPanel
-      [style]="{ height: 'calc(100vh - 81px)' }"
-      styleClass="styleClass"
-    >
-      <p-menu [model]="menuItems" [styleClass]="'w-full'">
-        <ng-template pTemplate="item" let-item>
-          <ng-container *ngIf="item.items; else singleItem">
-            <div
-              pRipple
-              pStyleClass="@next"
-              [enterFromClass]="'hidden'"
-              [leaveToClass]="'hidden'"
-              [hideOnOutsideClick]="true"
-              class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer menu-group"
-            >
-              <div class="flex align-items-center">
-                <i [class]="item.icon + ' mr-2'"></i>
-                <span class="font-medium">{{ item.label }}</span>
-              </div>
-              <i class="pi pi-chevron-down transition-transform"></i>
-            </div>
-            <ul class="submenu list-none p-0 m-0">
-              <li *ngFor="let subItem of item.items">
-                <a
-                  [routerLink]="subItem.routerLink"
-                  pRipple
-                  class="flex align-items-center cursor-pointer p-3 pl-8 border-round text-700 transition-duration-150 p-ripple no-underline"
-                >
-                  <i [class]="subItem.icon + ' mr-2'"></i>
-                  <span class="font-medium">{{ subItem.label }}</span>
-                </a>
-              </li>
-            </ul>
-          </ng-container>
-          <ng-template #singleItem>
-            <a
-              [routerLink]="item.routerLink"
-              pRipple
-              class="flex align-items-center cursor-pointer p-3 border-round text-700 p-ripple no-underline"
-            >
+    <p-menu [model]="menuItems" [styleClass]="'w-full h-screen p-3'">
+      <ng-template pTemplate="item" let-item>
+        <ng-container *ngIf="item.items; else singleItem">
+          <div
+            pRipple
+            pStyleClass="@next"
+            [enterFromClass]="'hidden'"
+            [leaveToClass]="'hidden'"
+            [hideOnOutsideClick]="true"
+            class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer menu-group"
+          >
+            <div class="flex align-items-center">
               <i [class]="item.icon + ' mr-2'"></i>
-              <span class="font-medium text-gray-500">{{ item.label }}</span>
-            </a>
-          </ng-template>
+              <span class="font-medium">{{ item.label }}</span>
+            </div>
+            <i class="pi pi-chevron-down transition-transform"></i>
+          </div>
+          <ul class="submenu list-none p-0 m-0">
+            <li *ngFor="let subItem of item.items">
+              <a
+                [routerLink]="subItem.routerLink"
+                pRipple
+                class="flex align-items-center cursor-pointer p-3 pl-8 border-round text-700 transition-duration-150 p-ripple no-underline"
+              >
+                <i [class]="subItem.icon + ' mr-2'"></i>
+                <span class="font-medium">{{ subItem.label }}</span>
+              </a>
+            </li>
+          </ul>
+        </ng-container>
+        <ng-template #singleItem>
+          <a
+            [routerLink]="item.routerLink"
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 border-round text-700 p-ripple no-underline"
+          >
+            <i [class]="item.icon + ' mr-2'"></i>
+            <span class="font-medium text-white">{{ item.label }}</span>
+          </a>
         </ng-template>
-      </p-menu>
-    </p-scrollPanel>
+      </ng-template>
+    </p-menu>
   </div>
 </div>

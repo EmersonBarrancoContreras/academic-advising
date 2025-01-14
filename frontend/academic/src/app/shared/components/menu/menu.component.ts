@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MenuModule } from 'primeng/menu';
 import { ButtonModule } from 'primeng/button';
@@ -32,14 +38,21 @@ import {
     trigger('menuAnimation', [
       state('visible', style({ transform: 'translateX(0)', opacity: 1 })),
       state('hidden', style({ transform: 'translateX(-100%)', opacity: 0 })),
-      transition('visible => hidden', animate('400ms ease-in')),
-      transition('hidden => visible', animate('400ms ease-out')),
+      transition(
+        'visible => hidden',
+        animate('300ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
+      transition(
+        'hidden => visible',
+        animate('300ms cubic-bezier(0.4, 0.0, 0.2, 1)')
+      ),
     ]),
   ],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent implements OnInit {
+  @Output() menuToggle = new EventEmitter<boolean>();
   menuVisible = true;
   dashboardType: string;
   constructor(private router: Router) {
@@ -52,11 +65,12 @@ export class MenuComponent implements OnInit {
 
   toggleMenu() {
     this.menuVisible = !this.menuVisible;
+    this.menuToggle.emit(this.menuVisible);
   }
 
   get buttonStyle() {
     return {
-      left: this.menuVisible ? '250px' : '0px',
+      left: this.menuVisible ? '260px' : '0px',
     };
   }
 
@@ -74,47 +88,33 @@ export class MenuComponent implements OnInit {
     if (this.dashboardType === 'student') {
       this.menuItems = [
         {
+          label: '¡Bienvenido a tu portal academico!',
+          disabled: true,
+        },
+        {
           label: 'Home',
           icon: 'pi pi-home',
-          items: this.getMenuItems(allRoutes, ['inicio']),
+          routerLink: [`/dashboard-${this.dashboardType}/home`],
         },
         {
           label: 'Portal Estudiante',
           icon: 'pi pi-tablet',
-          items: this.getMenuItems(allRoutes, [
-            'profile',
-            'academic-profile',
-            'academic-history',
-          ]),
+          routerLink: [`/dashboard-${this.dashboardType}/portal-student`],
         },
         {
           label: 'Búsqueda asesorías',
           icon: 'pi pi-search',
-          items: this.getMenuItems(allRoutes, [
-            'avalible-times',
-            'consultancy-catalog',
-            'filters-by-subject-speciality',
-          ]),
+          routerLink: [`/dashboard-${this.dashboardType}/busqueda-asesorias`],
         },
         {
           label: 'Gestión asesorías',
           icon: 'pi pi-chart-bar',
-          items: this.getMenuItems(allRoutes, [
-            'advisory-history',
-            'evaluations',
-            'qualifications',
-            'schedule-advice',
-            'schedule-consultancy',
-          ]),
+          routerLink: [`/dashboard-${this.dashboardType}/gestion-asesorias`],
         },
         {
           label: 'Pagos',
           icon: 'pi pi-dollar',
-          items: this.getMenuItems(allRoutes, [
-            'buy-packages',
-            'statement',
-            'payment-history',
-          ]),
+          routerLink: [`/dashboard-${this.dashboardType}/pagos`],
         },
       ];
     } else {
@@ -122,7 +122,6 @@ export class MenuComponent implements OnInit {
         {
           label: 'Portal Advisor',
           icon: 'pi pi-users',
-          items: this.getMenuItems(allRoutes, ['profile', 'student']),
         },
       ];
     }
@@ -146,24 +145,6 @@ export class MenuComponent implements OnInit {
   }
 
   private getIconPath(path: string): string {
-    const icons: Record<string, string> = {
-      profile: 'pi pi-user',
-      student: 'pi pi-user-plus',
-      inicio: 'pi pi-home',
-      'academic-profile': 'pi pi-graduation-cap',
-      'academic-history': 'pi pi-history',
-      'avalible-times': 'pi pi-calendar',
-      'consultancy-catalog': 'pi pi-book',
-      'filters-by-subject-speciality': 'pi pi-filter',
-      'advisory-history': 'pi pi-history',
-      evaluations: 'pi pi-check',
-      qualifications: 'pi pi-star',
-      'schedule-advice': 'pi pi-calendar-plus',
-      'schedule-consultancy': 'pi pi-calendar',
-      'buy-packages': 'pi pi-shopping-cart',
-      statement: 'pi pi-file',
-      'payment-history': 'pi pi-history',
-    };
-    return icons[path] || '';
+    return '';
   }
 }

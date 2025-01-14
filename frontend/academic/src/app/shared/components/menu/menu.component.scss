@@ -8,13 +8,21 @@
     display: flex;
     align-items: start;
     justify-content: start;
-    transition: left 0.3s ease-in-out;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
   }
 
   .p-menu {
     background-color: #1e293b !important;
     border: none !important;
     border-radius: 0px !important;
+    width: 18rem !important;
+
+    @media (min-width: 1536px) {
+      // breakpoint 2xl
+      height: calc(100vh - 81px) !important;
+    }
+
     // Elementos base
     ul,
     li {
@@ -74,8 +82,14 @@
     }
   }
 
-  .p-scrollpanel-bar-y {
-    width: 4px !important;
-    right: -276px !important;
-  }
+  // .p-scrollpanel {
+  //   @media (min-width: 1536px) {
+  //     height: calc(100vh - 81px) !important;
+  //   }
+  // }
+
+  // .p-scrollpanel-bar-y {
+  //   width: 4px !important;
+  //   right: -246px !important;
+  // }
 }
